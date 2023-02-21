@@ -157,3 +157,9 @@ def preprocess_titanic_df(path_to_titanic_csv):
     t = X["Fare"]
 
     return X2, t
+
+
+def linear_separable_1():
+    np.random.seed(1)
+    X, y = datasets.make_blobs(n_samples=300, centers=3, n_features=2, center_box=(0, 7))
+    return X, y
