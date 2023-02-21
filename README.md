@@ -1,4 +1,4 @@
-# Team-2 Benchmark-2 Student Repo
+# Team-2 Benchmark-3 Student Repo
 
 ## Repository Structure
 
