@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.base import BaseEstimator, RegressorMixin
 from sklearn.utils import resample
 from sklearn.metrics import mean_absolute_error
-from sklearn.datasets import make_circles
+from sklearn import datasets
 
 def preprocess_video_games_df(path_to_video_games_csv):
     """
@@ -158,9 +158,9 @@ def preprocess_titanic_df(path_to_titanic_csv):
 
     return X2, t
 
+# y has 2 classes with 850 1s and 8423 -1s, unbalanced
 def preprocess_pulsar_df(path_to_pulsar_csv):
     pulsar_df = pd.read_csv(path_to_pulsar_csv)
-    pulsar_df.columns = pulsar_df.columns.str.strip()
     pulsar_df.columns = ['IP Mean', 'IP Sd', 'IP Kurtosis', 'IP Skewness', 
               'DM-SNR Mean', 'DM-SNR Sd', 'DM-SNR Kurtosis', 'DM-SNR Skewness', 'target_class']
     
@@ -170,6 +170,17 @@ def preprocess_pulsar_df(path_to_pulsar_csv):
     X = X.drop(y_feature, axis=1)
     y2 = (y-0.5)*2
     print(X, y2)
+    return X, y2
+
+
+def preprocess_heart_df(path_to_heart_csv):
+    heart_df = pd.read_csv(path_to_heart_csv)
+    
+    X = heart_df.dropna()
+    y_feature = "DEATH_EVENT"
+    y = X[y_feature]
+    X = X.drop(y_feature, axis=1)
+    y2 = (y-0.5)*2
     return X, y2
     
 def linear_separable_1():
@@ -185,6 +196,6 @@ def linear_non_separable_1():
     return X, y2
 
 def non_linear_1():
-    X, y = make_circles(n_samples=300, noise=0.05)
+    X, y = datasets.make_circles(n_samples=300, noise=0.05)
     y2 = (y-0.5)*2
     return X, y2

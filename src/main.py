@@ -1,5 +1,5 @@
 from sklearn.base import RegressorMixin
-
+from . import svm
 
 def create_model() -> RegressorMixin:
     """
@@ -8,4 +8,5 @@ def create_model() -> RegressorMixin:
     Initialize with all hyperparameters here
     Returns the initialized model
     """
+    return svm.SVMClassifier(C=0.1, kernel='linear', degree=3)
     pass
