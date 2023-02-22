@@ -68,7 +68,7 @@ def run_benchmarks(model_func, what_model_to_test = "svm") -> dict:
             nonlocal preds
             model.fit(x_train, y_train)
             preds = model.predict(x_test)
-            print(1-np.sum(np.sign(preds)!=np.sign(y_test))/len(y_test))
+            print("error rate is:", np.sum(np.sign(preds)!=np.sign(y_test))/len(y_test))
 
         perf = timeit.timeit(benchmark, number=n_iterations) / n_iterations
         

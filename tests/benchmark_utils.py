@@ -253,9 +253,17 @@ def challenge2():
 #     return X.T,y
 
 
+# def extra_challenge():
+#     np.random.seed(1)
+#     X = np.random.random((5,1000))
+#     y = X[0] * X[1] * X[2] * X[3] * X[4]
+#     y = np.where(y > np.mean(y), 1, -1)
+#     return X.T,y
+
+
 def extra_challenge():
     np.random.seed(1)
-    X = np.random.random((5,1000))
-    y = X[0] * X[1] * X[2] * X[3] * X[4]
-    y = np.where(y > np.mean(y), 1, -1)
+    X = np.random.random((10,1000))
+    y = 0.001*X[0] + 3.8*np.log(X[1]) - X[2]**3 - 0.4*np.abs(X[4]) + 1.11*np.exp(X[5]) - 0.00001*np.sin(X[8])
+    y = np.where(y > 0, 1, -1)
     return X.T,y
