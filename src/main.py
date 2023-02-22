@@ -40,6 +40,9 @@ class Solution:
     def modify_datasets(self):
         self.datasets['challenge1'] = self._challenge1()
         self.datasets['challenge2'] = self._challenge2()
+        self.datasets['pulsar'] = self._challenge3()
+        self.datasets['heart'] = self._challenge4()
+        self.datasets['extra_challenge'] = self._challenge5()
 
     def _challenge1(self):
         X1, y1 = self.datasets['challenge1']
@@ -54,3 +57,24 @@ class Solution:
         # add your code here!
 
         return X2, y2
+    
+    def _challenge3(self):
+        X3, y3 = self.datasets['pulsar']
+
+        # add your code here!
+
+        return X3, y3
+        
+    def _challenge4(self):
+        X4, y4 = self.datasets['heart']
+
+        # add your code here!
+
+        return X4, y4
+
+    def _challenge5(self):
+        X5, y5 = self.datasets['extra_challenge']
+
+        # add your code here!
+
+        return X5, y5
