@@ -4,6 +4,15 @@ from sklearn.base import BaseEstimator, RegressorMixin
 from sklearn.utils import resample
 from sklearn.metrics import mean_absolute_error
 from sklearn import datasets
+from sklearn.datasets import make_classification
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from imblearn.over_sampling import SMOTE, ADASYN, RandomOverSampler
+from imblearn.under_sampling import RandomUnderSampler
+import seaborn as sns
+import matplotlib.pyplot as plt
+from collections import Counter
+
+SEED=42
 
 def preprocess_video_games_df(path_to_video_games_csv):
     """
@@ -267,3 +276,37 @@ def extra_challenge():
     y = 0.001*X[0] + 3.8*np.log(X[1]) - X[2]**3 - 0.4*np.abs(X[4]) + 1.11*np.exp(X[5]) - 0.00001*np.sin(X[8])
     y = np.where(y > 0, 1, -1)
     return X.T,y
+
+def balance_dataset(X, y, method="SMOTE"):
+    techniques = {
+        "smote" : SMOTE(random_state=SEED),
+        "random" : RandomOverSampler(random_state=SEED),
+        "under" : RandomUnderSampler(random_state=SEED),
+    }
+
+    sampler = techniques[method]
+    X_resampled, y_resampled = sampler.fit_resample(X, y,)
+
+    return X_resampled, y_resampled
+
+
+def scale_data(X_train=None, X_test=None, method="standard"):
+    """
+    Function to scale features....
+    """
+    techniques = {
+        "standard" : StandardScaler(),
+        "minmax" : MinMaxScaler(),
+    }
+
+    X_train_scaled, X_test_scaled = None, None
+
+    scaler = techniques[method]
+
+    if X_train is not None:
+        X_train_scaled = scaler.fit_transform(X_train)
+        
+    if X_test is not None:
+        X_test_scaled = scaler.transform(X_test)
+
+    return X_train_scaled, X_test_scaled
