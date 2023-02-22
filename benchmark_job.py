@@ -1,15 +1,16 @@
 import sys
 
 from tests.benchmarks import run_benchmarks
-from src.main import create_model
+from src.main import Solution
 from src.send_results import UserResults
 
 
 def benchmarks():
-    if create_model() is None:
-        print("No model provided")
+    if Solution is None:
+        print("No solution class provided")
         return
-    results = run_benchmarks(create_model)
+    soln = Solution()
+    results = run_benchmarks(soln)
     print(results)
     if len(sys.argv) > 1:  # send results if on the server
         try:
