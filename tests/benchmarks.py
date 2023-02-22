@@ -44,8 +44,8 @@ def run_benchmarks(model_func, what_model_to_test = "svm") -> dict:
         "pulsar": preprocess_pulsar_df("data/pulsar_star.csv"),
         "heart": preprocess_heart_df("data/heart_failure.csv"),
     }
-    for dataset_name, (X, y) in svm_datasets.items():
-        print(dataset_name, X, y)
+    # for dataset_name, (X, y) in svm_datasets.items():
+    #     print(dataset_name, X, y)
         
     np.random.seed(SEED)
     results = {}
