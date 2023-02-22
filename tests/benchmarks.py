@@ -7,6 +7,7 @@ from benchmark_utils import (
     preprocess_flare_df,
     preprocess_life_df,
     preprocess_video_games_df,
+    preprocess_pulsar_df,
 )
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
@@ -22,6 +23,7 @@ def run_benchmarks(model_func) -> dict:
     datasets = {
         "video_games": preprocess_video_games_df("data/video_games.csv"),
         "life": preprocess_life_df("data/life_expectancy.csv"),
+        "pulsar": preprocess_pulsar_df("data/pulsar_star.csv"),
     }
 
     np.random.seed(SEED)

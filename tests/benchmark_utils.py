@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.base import BaseEstimator, RegressorMixin
 from sklearn.utils import resample
 from sklearn.metrics import mean_absolute_error
-
+from sklearn.datasets import make_circles
 
 def preprocess_video_games_df(path_to_video_games_csv):
     """
@@ -158,8 +158,33 @@ def preprocess_titanic_df(path_to_titanic_csv):
 
     return X2, t
 
-
+def preprocess_pulsar_df(path_to_pulsar_csv):
+    pulsar_df = pd.read_csv(path_to_pulsar_csv)
+    pulsar_df.columns = pulsar_df.columns.str.strip()
+    pulsar_df.columns = ['IP Mean', 'IP Sd', 'IP Kurtosis', 'IP Skewness', 
+              'DM-SNR Mean', 'DM-SNR Sd', 'DM-SNR Kurtosis', 'DM-SNR Skewness', 'target_class']
+    
+    X = pulsar_df.dropna()
+    y_feature = "target_class"
+    y = X[y_feature]
+    X = X.drop(y_feature, axis=1)
+    y2 = (y-0.5)*2
+    print(X, y2)
+    return X, y2
+    
 def linear_separable_1():
     np.random.seed(1)
     X, y = datasets.make_blobs(n_samples=300, centers=3, n_features=2, center_box=(0, 7))
-    return X, y
+    y2 = (y-0.5)*2
+    return X, y2
+
+def linear_non_separable_1():
+    np.random.seed(1)
+    X, y = datasets.make_blobs(n_samples=300, centers=3, n_features=2, center_box=(0, 5))
+    y2 = (y-0.5)*2
+    return X, y2
+
+def non_linear_1():
+    X, y = make_circles(n_samples=300, noise=0.05)
+    y2 = (y-0.5)*2
+    return X, y2
