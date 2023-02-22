@@ -8,5 +8,5 @@ def create_model() -> RegressorMixin:
     Initialize with all hyperparameters here
     Returns the initialized model
     """
-    return svm.SVMClassifier(C=0.1, kernel='linear', degree=3)
+    return svm.SVMClassifier(C=0.1, kernel='rbf', degree=3)
     pass
