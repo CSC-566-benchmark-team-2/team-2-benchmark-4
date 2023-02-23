@@ -13,6 +13,7 @@ from tests.benchmark_utils import (
 )
 import pandas as pd
 from . import svm
+from preprocessing import balance_dataset, scale_data, select_features
 
 class Solution:
     def __init__(self):
