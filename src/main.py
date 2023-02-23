@@ -7,7 +7,6 @@ from tests.benchmark_utils import (
     breast_cancer,
     challenge1,
     challenge2,
-    extra_challenge,
     balance_dataset, 
     scale_data
 )
@@ -23,7 +22,6 @@ class Solution:
             "breast_cancer" : breast_cancer(),
             "challenge1": challenge1(),
             "challenge2": challenge2(),
-            "extra_challenge": extra_challenge(),
             "pulsar": preprocess_pulsar_df("data/pulsar_star.csv"),
             "heart": preprocess_heart_df("data/heart_failure.csv"),
         }
@@ -43,7 +41,6 @@ class Solution:
         self.datasets['challenge2'] = self._challenge2()
         self.datasets['pulsar'] = self._challenge3()
         self.datasets['heart'] = self._challenge4()
-        self.datasets['extra_challenge'] = self._challenge5()
 
     def _challenge1(self):
         X1, y1 = self.datasets['challenge1']
@@ -72,10 +69,3 @@ class Solution:
         # add your code here!
 
         return X4, y4
-
-    def _challenge5(self):
-        X5, y5 = self.datasets['extra_challenge']
-
-        # add your code here!
-
-        return X5, y5
