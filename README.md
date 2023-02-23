@@ -15,7 +15,10 @@ We have gather/created 5 datasets with various challenges encountered in real li
 - main.py: Paste solutions from notebook into `create_model` and `_challenge1`, `_challenge2`... to submit 
 - svm.py: The imports in main.py assume a python file svm.py in the same directory as main.py with code containing your svm implementation.
 
-**NOTE:** Copies of the preprocessing function are imported into main.py, but if you change the functions in the notebook you must also change them in preprocessing.py
+**NOTE:** 
+- Copies of the preprocessing function are imported into main.py, but if you change the functions in the notebook you must also change them in preprocessing.py
+
+- May also need tc='d' in the cvxopt matrix constuctor to prevent crashes
 
 ## Submission Process
 
