@@ -1,62 +1,109 @@
-from sklearn.base import RegressorMixin
-from tests.benchmark_utils import (
-    preprocess_pulsar_df,
-    preprocess_heart_df,
-    gaussian_quantiles,
-    moons,
-    breast_cancer,
-    challenge1,
-    challenge2,
-    balance_dataset, 
-    scale_data
-)
-import pandas as pd
-from . import svm
-from preprocessing import balance_dataset, scale_data, select_features
+import os
+import sys
+import random
 
-class Solution:
-    def __init__(self):
-        self.datasets = {
-            "gaussian": gaussian_quantiles(),
-            "moons": moons(),
-            "breast_cancer" : breast_cancer(),
-            "challenge1": challenge1(),
-            "challenge2": challenge2(),
-            "heart": preprocess_heart_df("data/heart_failure.csv"),
-        }
-    
-    def create_model(self) -> RegressorMixin:
-        """
-        Put any initialization logic for your model in this function.
-        No need to `fit` or `predict`
-        Initialize with all hyperparameters here
-        Returns the initialized model
-        """
-        return svm.SVMClassifier(C=1, kernel='rbf', degree=3)
-        pass
+from rps_game import RockPaperScissorsGame, Move
+from agents import *
 
-    def modify_datasets(self):
-        self.datasets['challenge1'] = self._challenge1()
-        self.datasets['challenge2'] = self._challenge2()
-        self.datasets['heart'] = self._challenge3()
+# from send_results import
 
-    def _challenge1(self):
-        X1, y1 = self.datasets['challenge1']
+num_games = 1000  # number of rps games to play
 
-        # add your code here!
 
-        return X1, y1
+def set_computer_agent(agent: int):
+    if agent == 1:
+        return Agent1(seed=42)
+    if agent == 2:
+        return Agent2()
+    if agent == 3:
+        return ProbabilisticAgent()
 
-    def _challenge2(self):
-        X2, y2 = self.datasets['challenge2']
 
-        # add your code here!
+# sample agents
+def get_computer_agent_input(agent, last_result: int):
+    return agent.move(last_result)
 
-        return X2, y2
-    
-    def _challenge3(self):
-        X3, y3 = self.datasets['heart']
 
-        # add your code here!
+def get_your_agent_input(last_result: int):
+    # last_result:
+    #   None means no previous game was played
+    #   0 means the last game was a draw,
+    #   1 means that your agent won the last game
+    #   2 means that your agent lost the last game
 
-        return X3, y3
+    choice = None  # options: [0-2], Rock = 0, Paper = 1, Scissors = 2
+    move = Move(choice)
+    # YOUR CODE HERE
+
+    return move
+
+
+def get_random_agent_input(last_result: int):
+
+    return Move(random.choice([0, 1, 2]))
+    # return random.choice([0, 1, 2])
+
+
+if __name__ == "__main__":
+
+    rps = RockPaperScissorsGame()
+    agent_selected = 1  # which agent to test against, options: [1-3]
+    agent = set_computer_agent(agent_selected)
+    last_result = None
+    generating_data = True
+    test_functionality = False
+
+    import pandas as pd
+
+    output_df = pd.DataFrame(columns=["agents_choice", "result"])
+
+    for i in range(num_games):
+
+        if test_functionality:
+            player_one_choice = get_random_agent_input(last_result)
+            player_two_choice = get_random_agent_input(last_result)
+            last_result = rps.get_winner(player_one_choice, player_two_choice)
+            continue
+
+        if generating_data:  # TODO: get rid of this after generating data
+            # player1: our agent, player2: random agent
+            player_two_choice = get_computer_agent_input(
+                set_computer_agent(1), last_result
+            )
+            player_one_choice = get_computer_agent_input(agent, last_result)
+            last_result = rps.get_winner(player_one_choice, player_two_choice)
+
+            str_result = "D"
+            if last_result == 1:
+                str_result = "L"
+            elif last_result == 2:
+                str_result = "W"
+
+            output_df = pd.concat(
+                [
+                    output_df,
+                    pd.Series({"agents_move": player_two_choice, "result": str_result}),
+                ],
+                ignore_index=True,
+                axis=1,
+            )
+            continue
+        else:
+            # player1: your agent, player2: computer agent
+            player_two_choice = get_computer_agent_input(agent, last_result)
+            player_one_choice = get_your_agent_input(last_result)
+        last_result = rps.get_winner(player_one_choice, player_two_choice)
+
+    print(rps.get_result_percentages())  # DEBUG
+
+    output_df.to_csv(f"agent{agent_selected}_df.csv")
+
+    # results = rps.get_result_percentages()
+    # results_metrics = {
+    #     "agent": agent_selected,
+    #     "win": results["player_1"],
+    #     "loss": results["player_2"],
+    #     "draw": results["draw"],
+    # }
+
+    sys.exit()
