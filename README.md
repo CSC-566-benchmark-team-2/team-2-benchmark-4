@@ -7,10 +7,7 @@
 
 ## Idea Behind Benchmark 4
 
-The original idea behind benchmark 4 was to have teams create agents to play Atari games using OpenAI's Gym framework.
-While this is more of an AI task, we reframe the problem by creating training data and asking ya'll to create neural nets to a variety of agents we created. So,
-for this benchmark we have created our own version of an AI gym, created training data from Agents who take actions in a certain manner, and have given you a framework
-to create your own and play the game.
+The original idea behind benchmark 4 was to have teams create agents to play Atari games using OpenAI's Gym framework. While this is more of an AI task, we reframe the problem by creating training data and ask teams to create neural nets to predict moves and play a variety of agents we created. So, for this benchmark we have created our own version of an AI gym, created training data from Agents who take actions in a certain manner, and have given you a framework to create your own and play the game.
 
 ## Training Data
 
