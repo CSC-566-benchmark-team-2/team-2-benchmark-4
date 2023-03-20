@@ -1,6 +1,7 @@
 import os
 import sys
 import random
+from typing import Dict
 
 from rps_game import RockPaperScissorsGame, Move
 from agents import *
@@ -10,13 +11,33 @@ from agents import *
 num_games = 2000  # number of rps games to play
 
 
+def create_agent(requested_agent: str) -> Agent:
+    """
+    Initialization function that creates instances of the agent's you trained on the provided datasets.
+
+    Args:
+        `requested_agent`: A string identifier of the opponent that your agent will run against: 'agent1' | 'agent2' | 'agent3'
+    Returns:
+        Your instantiated agent initialized for benchmarking
+
+    """
+    # Your code here.
+
+    if requested_agent == "agent_1":
+        return None
+    elif requested_agent == "agent_2":
+        return None
+    elif requested_agent == "agent_3":
+        return None
+
+
 def set_computer_agent(agent: int, seed: int = 42):
     if agent == 1:
         return Agent1(seed=seed)
     if agent == 2:
         return Agent2()
     if agent == 3:
-        return ProbabilisticAgent()
+        return CyclicalAgent(seed=seed)
 
 
 # sample agents
@@ -48,8 +69,8 @@ if __name__ == "__main__":
 
     rps = RockPaperScissorsGame()
     agent_selected = 3  # which agent to test against, options: [1-3]
-    agent = set_computer_agent(agent_selected)
-    random_agent = Agent1(seed=25)
+    agent = set_computer_agent(agent_selected, seed=42)
+    random_agent = Agent1(seed=75)
     last_result = None
     generating_data = True
     test_functionality = False
@@ -78,7 +99,7 @@ if __name__ == "__main__":
             elif last_result == 2:
                 str_result = "W"
 
-            player_two_choice = str(player_two_choice).split(".")[
+            player_one_choice = str(player_one_choice).split(".")[
                 1
             ]  # take off prefix from "Move.[Rock|Paper|Scissors]"
 
@@ -86,7 +107,7 @@ if __name__ == "__main__":
                 [
                     output_df,
                     pd.DataFrame(
-                        [{"agents_choice": player_two_choice, "result": str_result}]
+                        [{"agents_choice": player_one_choice, "result": str_result}]
                     ),
                 ],
                 ignore_index=True,

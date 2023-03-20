@@ -1,5 +1,8 @@
 import sys
 import os
+from typing import Callable
+
+from src.rps_game import Move, RockPaperScissorsGame
 
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 
@@ -14,44 +17,40 @@ from benchmark_utils import (
     breast_cancer,
     challenge1,
     challenge2,
-    extra_challenge
+    extra_challenge,
 )
 from src.main import Solution
+from src.agents import Agent
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 import numpy as np
+import pandas as pd
 import timeit
 
 
-def run_benchmarks(solution : Solution) -> dict:
+def run_benchmarks(create_agent: Callable[[str], Agent]) -> dict:
     SEED = 42
-    TEST_SIZE = 0.2
-    TIMING_ITERATIONS = 3
-        
+
     np.random.seed(SEED)
     results = {}
-    
-    solution.modify_datasets()
-    datasets = solution.datasets
-        
-    for dataset_name, (X, y) in datasets.items():
-        n_iterations = 1 if dataset_name == "video_games" else TIMING_ITERATIONS
-        model = solution.create_model()
-        x_train, x_test, y_train, y_test = train_test_split(
-            X, y, test_size=TEST_SIZE, random_state=SEED, shuffle=True
-        )
-        preds = None
-        print("Fitting the dataset", dataset_name, "...")
-        def benchmark():
-            nonlocal preds
-            model.fit(x_train, y_train)
-            preds = model.predict(x_test)
-            print("error rate is:", np.sum(np.sign(preds)!=np.sign(y_test))/len(y_test))
+    game = RockPaperScissorsGame()
+    agent_ids = ["agent" + i for i in range(1, 4)]
+    for agent_id in agent_ids:
+        agent = create_agent(agent_id)
+        test_df = pd.read_csv(agent_id + "_df_test.csv")
+        wins = 0
+        draws = 0
+        count = 0
+        last_result = None
+        for _, row in test_df.iterrows():
+            opponent_move = Move.from_str(row["agent_choice"])
+            player_move = agent.move(last_result)
+            result = game.get_winner(player_move, opponent_move)
+            wins += result == 1
+            draws += results == 0
 
-        perf = timeit.timeit(benchmark, number=n_iterations) / n_iterations
-        
-        results[dataset_name] = {
-            "error rate": np.sum(np.sign(preds)!=np.sign(y_test))/len(y_test),
-            "runtime": perf,
+        results[agent_id] = {
+            "wld_score": (3 * wins + draws)
+            / (count * 3)  # 3 points for win, 1 point for draw, 0 for loss
         }
     return results

@@ -1,16 +1,16 @@
 import sys
 
 from tests.benchmarks import run_benchmarks
-from src.main import Solution
+from src.main import create_agent
 from src.send_results import UserResults
 
 
 def benchmarks():
-    if Solution is None:
-        print("No solution class provided")
+    if create_agent("agent1") is None:
+        print("Please implement the `create_agent` function in src/main.py")
         return
     soln = Solution()
-    results = run_benchmarks(soln)
+    results = run_benchmarks(create_agent)
     print(results)
     if len(sys.argv) > 1:  # send results if on the server
         try:
