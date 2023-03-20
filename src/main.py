@@ -7,12 +7,12 @@ from agents import *
 
 # from send_results import
 
-num_games = 1000  # number of rps games to play
+num_games = 2000  # number of rps games to play
 
 
-def set_computer_agent(agent: int):
+def set_computer_agent(agent: int, seed: int = 42):
     if agent == 1:
-        return Agent1(seed=42)
+        return Agent1(seed=seed)
     if agent == 2:
         return Agent2()
     if agent == 3:
@@ -47,8 +47,9 @@ def get_random_agent_input(last_result: int):
 if __name__ == "__main__":
 
     rps = RockPaperScissorsGame()
-    agent_selected = 1  # which agent to test against, options: [1-3]
+    agent_selected = 3  # which agent to test against, options: [1-3]
     agent = set_computer_agent(agent_selected)
+    random_agent = Agent1(seed=25)
     last_result = None
     generating_data = True
     test_functionality = False
@@ -67,9 +68,7 @@ if __name__ == "__main__":
 
         if generating_data:  # TODO: get rid of this after generating data
             # player1: our agent, player2: random agent
-            player_two_choice = get_computer_agent_input(
-                set_computer_agent(1), last_result
-            )
+            player_two_choice = get_computer_agent_input(random_agent, last_result)
             player_one_choice = get_computer_agent_input(agent, last_result)
             last_result = rps.get_winner(player_one_choice, player_two_choice)
 
@@ -79,13 +78,19 @@ if __name__ == "__main__":
             elif last_result == 2:
                 str_result = "W"
 
+            player_two_choice = str(player_two_choice).split(".")[
+                1
+            ]  # take off prefix from "Move.[Rock|Paper|Scissors]"
+
             output_df = pd.concat(
                 [
                     output_df,
-                    pd.Series({"agents_move": player_two_choice, "result": str_result}),
+                    pd.DataFrame(
+                        [{"agents_choice": player_two_choice, "result": str_result}]
+                    ),
                 ],
                 ignore_index=True,
-                axis=1,
+                axis=0,
             )
             continue
         else:

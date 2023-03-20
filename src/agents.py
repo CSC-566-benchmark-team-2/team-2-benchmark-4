@@ -20,16 +20,16 @@ class Agent1(Agent):
         self.rand = random.Random(seed)
 
     def move(self, last_result: int):
-        return Move(self.rand.randint(0, 3))
+        return Move(self.rand.randint(0, 2))
 
 
 class Agent2(Agent):
     def __init__(self, move=1) -> None:
-        self.move = move
+        self.selected_move = move
         pass
 
     def move(self, last_result: int):
-        return Move(self.move)
+        return Move(self.selected_move)
 
 
 class ProbabilisticAgent(Agent):
@@ -40,9 +40,9 @@ class ProbabilisticAgent(Agent):
 
     def __init__(self) -> None:
         self.move_stats = {
-            Move.Rock: {"count": 0, "wins": 0},
-            Move.Paper: {"count": 0, "wins": 0},
-            Move.Scissors: {"count": 0, "wins": 0},
+            Move.Rock: {"count": 1, "wins": 0},
+            Move.Paper: {"count": 1, "wins": 0},
+            Move.Scissors: {"count": 1, "wins": 0},
         }
         self.last_move: Move = None
 
@@ -50,10 +50,14 @@ class ProbabilisticAgent(Agent):
         if last_result == 2:
             self.move_stats[self.last_move]["wins"] += 1
 
-        best_move = max(self.move_stats.keys(), key=lambda k: self.move_stats[k])
+        best_move = max(
+            self.move_stats.keys(),
+            key=lambda k: self.move_stats[k]["wins"] / self.move_stats[k]["count"],
+        )
         move_stats = self.move_stats[best_move]
         win_rate = move_stats["wins"] / move_stats["count"]
-        if win_rate < 0.5:
+        if win_rate < 0.4:
             best_move = random.choice(Move.domain())
         self.move_stats[best_move]["count"] += 1
+        self.last_move = best_move
         return best_move
