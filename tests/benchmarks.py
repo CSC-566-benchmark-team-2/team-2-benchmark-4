@@ -34,16 +34,16 @@ def run_benchmarks(create_agent: Callable[[str], Agent]) -> dict:
     np.random.seed(SEED)
     results = {}
     game = RockPaperScissorsGame()
-    agent_ids = ["agent" + i for i in range(1, 4)]
+    agent_ids = [f"agent{i}" for i in range(1, 4)]
     for agent_id in agent_ids:
         agent = create_agent(agent_id)
-        test_df = pd.read_csv(agent_id + "_df_test.csv")
+        test_df = pd.read_csv("data/"+agent_id + "_df_test.csv")
         wins = 0
         draws = 0
         count = 0
         last_result = None
         for _, row in test_df.iterrows():
-            opponent_move = Move.from_str(row["agent_choice"])
+            opponent_move = Move.from_str(row["agents_choice"])
             player_move = agent.move(last_result)
             result = game.get_winner(player_move, opponent_move)
             wins += result == 1

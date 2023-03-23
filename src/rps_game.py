@@ -21,6 +21,13 @@ class Move(enum.Enum):
 
     def loses_to(self, other):
         return not self.wins_against(other) and not self.draws(other)
+    
+    def from_str(val):
+        if val is "Rock":
+            return Move.Rock
+        elif val is "Paper":
+            return Move.Paper
+        return Move.Scissors
 
     @staticmethod
     def domain() -> list["Move"]:
