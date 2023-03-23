@@ -9,7 +9,7 @@ def benchmarks():
     if create_agent("agent1") is None:
         print("Please implement the `create_agent` function in src/main.py")
         return
-    soln = Solution()
+    # soln = Solution()
     results = run_benchmarks(create_agent)
     print(results)
     if len(sys.argv) > 1:  # send results if on the server
@@ -22,3 +22,4 @@ def benchmarks():
 
 if __name__ == "__main__":
     benchmarks()
+    sys.exit()

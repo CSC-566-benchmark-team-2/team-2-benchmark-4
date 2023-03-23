@@ -19,7 +19,7 @@ from benchmark_utils import (
     challenge2,
     extra_challenge,
 )
-from src.main import Solution
+# from src.main import Solution
 from src.agents import Agent
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split

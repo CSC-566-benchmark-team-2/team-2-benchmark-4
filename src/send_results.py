@@ -11,7 +11,7 @@ import json
 
 from dataclasses import dataclass, asdict
 
-ENDPOINT_URL = "https://csc-566-benchmarks-default-rtdb.firebaseio.com/benchmark-3.json"
+ENDPOINT_URL = "https://csc-566-benchmarks-default-rtdb.firebaseio.com/benchmark-4.json"
 
 
 @dataclass
