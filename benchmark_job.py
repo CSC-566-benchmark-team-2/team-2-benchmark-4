@@ -6,7 +6,7 @@ from src.send_results import UserResults
 
 
 def benchmarks():
-    if create_agent("agent1") is None:
+    if create_agent("agent_1") is None:
         print("Please implement the `create_agent` function in src/main.py")
         return
     # soln = Solution()
@@ -22,4 +22,5 @@ def benchmarks():
 
 if __name__ == "__main__":
     benchmarks()
+
     sys.exit()
